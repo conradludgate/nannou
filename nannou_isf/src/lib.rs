@@ -141,14 +141,14 @@ pub fn glsl_string_from_isf(isf: &isf::Isf) -> String {
 
     // Combine all the declarations together.
     let mut s = String::new();
-    s.push_str(&frag_norm_coord_str);
-    s.push_str(&isf_data_str);
+    s.push_str(frag_norm_coord_str);
+    s.push_str(isf_data_str);
     s.extend(isf_data_input_str);
-    s.push_str(&img_sampler_str);
+    s.push_str(img_sampler_str);
     s.extend(imported_textures);
     s.extend(input_textures);
     s.extend(pass_textures);
-    s.push_str(&img_fns_str);
+    s.push_str(img_fns_str);
     s
 }
 

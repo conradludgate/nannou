@@ -309,7 +309,7 @@ impl IsfInputData {
             }
             isf::InputType::Color(c) => {
                 let v = c.default.clone().or(c.min.clone()).unwrap_or_default();
-                let r = v.get(0).cloned().unwrap_or_default();
+                let r = v.first().cloned().unwrap_or_default();
                 let g = v.get(1).cloned().unwrap_or_default();
                 let b = v.get(2).cloned().unwrap_or_default();
                 let a = v.get(3).cloned().unwrap_or_default();
@@ -410,7 +410,7 @@ pub fn compile_isf_shader(
     device: &wgpu::Device,
     path: &Path,
 ) -> (Option<wgpu::ShaderModule>, Option<ShaderError>) {
-    let res = std::fs::read_to_string(&path)
+    let res = std::fs::read_to_string(path)
         .map_err(ShaderError::from)
         .and_then(|s| isf::parse(&s).map(|isf| (s, isf)).map_err(From::from))
         .and_then(|(old_str, isf)| {
@@ -431,7 +431,7 @@ pub fn compile_shader(
     device: &wgpu::Device,
     path: &Path,
 ) -> (Option<wgpu::ShaderModule>, Option<ShaderError>) {
-    let res = hotglsl::compile(&path).map_err(ShaderError::from);
+    let res = hotglsl::compile(path).map_err(ShaderError::from);
     let (bytes, compile_err) = split_result(res);
     let module = bytes.map(|b| wgpu::shader_from_spirv_bytes(device, &b));
     (module, compile_err)
@@ -517,7 +517,7 @@ impl IsfPipeline {
                 isf,
                 dst_texture_size,
                 &image_loader,
-                &images_path,
+                images_path,
                 &mut isf_data,
             );
         }
@@ -538,12 +538,12 @@ impl IsfPipeline {
         let uniforms_usage = wgpu::BufferUsages::UNIFORM | wgpu::BufferUsages::COPY_DST;
         let isf_uniform_buffer = device.create_buffer_init(&BufferInitDescriptor {
             label: None,
-            contents: &isf_uniforms_bytes,
+            contents: isf_uniforms_bytes,
             usage: uniforms_usage,
         });
         let isf_inputs_uniform_buffer = device.create_buffer_init(&BufferInitDescriptor {
             label: None,
-            contents: &isf_input_uniforms_bytes,
+            contents: isf_input_uniforms_bytes,
             usage: uniforms_usage,
         });
 
@@ -660,22 +660,22 @@ impl IsfPipeline {
         let mut shader_recompiled = false;
         for path in touched_shaders {
             let path = path.as_ref();
-            if self.vs.source.as_path() == Some(&path) {
-                let (module, error) = compile_shader(device, &path);
+            if self.vs.source.as_path() == Some(path) {
+                let (module, error) = compile_shader(device, path);
                 self.vs.error = error;
                 if module.is_some() {
                     shader_recompiled = true;
                     self.vs.module = module;
                 }
-            } else if self.fs.source.as_path() == Some(&path) {
-                let (module, error) = compile_isf_shader(device, &path);
+            } else if self.fs.source.as_path() == Some(path) {
+                let (module, error) = compile_isf_shader(device, path);
                 self.fs.error = error;
                 if module.is_some() {
                     shader_recompiled = true;
                     self.fs.module = module;
                 }
                 // Update the `Isf` instance.
-                let isf_res = read_isf_from_path(&path);
+                let isf_res = read_isf_from_path(path);
                 let (new_isf, new_isf_err) = split_result(isf_res);
                 self.isf_err = new_isf_err;
                 if self.isf.is_none() {
@@ -780,7 +780,7 @@ impl IsfPipeline {
             let usage = wgpu::BufferUsages::COPY_SRC;
             let new_buffer = device.create_buffer_init(&BufferInitDescriptor {
                 label: None,
-                contents: &isf_uniforms_bytes,
+                contents: isf_uniforms_bytes,
                 usage,
             });
             let size = isf_uniforms_bytes.len() as wgpu::BufferAddress;
@@ -812,7 +812,7 @@ impl IsfPipeline {
     pub fn encode_to_frame(&self, frame: &Frame, isf_time: IsfTime) {
         let device = frame.device_queue_pair().device();
         let mut encoder = frame.command_encoder();
-        self.encode_render_pass(device, &mut *encoder, frame.texture_view(), isf_time);
+        self.encode_render_pass(device, &mut encoder, frame.texture_view(), isf_time);
     }
 
     /// Returns the current compilation error for the vertex shader if there is one.
@@ -895,7 +895,7 @@ fn create_render_pipeline(
     dst_format: wgpu::TextureFormat,
     sample_count: u32,
 ) -> wgpu::RenderPipeline {
-    wgpu::RenderPipelineBuilder::from_layout(layout, &vs_mod)
+    wgpu::RenderPipelineBuilder::from_layout(layout, vs_mod)
         .fragment_shader(fs_mod)
         .color_format(dst_format)
         .add_vertex_buffer::<Vertex>(&wgpu::vertex_attr_array![0 => Float32x2])
@@ -1001,7 +1001,7 @@ fn default_isf_texture_usage() -> wgpu::TextureUsages {
 
 fn read_isf_from_path(path: &Path) -> Result<isf::Isf, IsfError> {
     std::fs::read_to_string(path)
-        .map_err(|err| IsfError::from(err))
+        .map_err(IsfError::from)
         .and_then(|s| isf::parse(&s).map_err(From::from))
 }
 

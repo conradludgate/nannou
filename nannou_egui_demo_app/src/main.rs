@@ -23,7 +23,7 @@ fn model(app: &App) -> Model {
     let mut egui_demo_app = egui_demo_lib::WrapApp::default();
     let proxy = app.create_proxy();
     egui.do_frame_with_epi_frame(proxy, |ctx, epi_frame| {
-        egui_demo_app.setup(&ctx, epi_frame, None);
+        egui_demo_app.setup(ctx, epi_frame, None);
     });
     Model {
         egui,
@@ -44,7 +44,7 @@ fn update(app: &App, model: &mut Model, update: Update) {
     egui.set_elapsed_time(update.since_start);
     let proxy = app.create_proxy();
     egui.do_frame_with_epi_frame(proxy, |ctx, frame| {
-        egui_demo_app.update(&ctx, frame);
+        egui_demo_app.update(ctx, frame);
     });
 }
 

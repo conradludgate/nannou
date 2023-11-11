@@ -277,8 +277,8 @@ impl Input {
             }
             CursorMoved { position, .. } => {
                 self.pointer_pos = pos2(
-                    position.x as f32 / self.window_scale_factor as f32,
-                    position.y as f32 / self.window_scale_factor as f32,
+                    position.x as f32 / self.window_scale_factor,
+                    position.y as f32 / self.window_scale_factor,
                 );
                 self.raw
                     .events
@@ -321,7 +321,7 @@ impl Input {
         let [w, h] = self.window_size_pixels;
         egui::Rect::from_min_size(
             Default::default(),
-            egui::vec2(w as f32, h as f32) / self.window_scale_factor as f32,
+            egui::vec2(w as f32, h as f32) / self.window_scale_factor,
         )
     }
 }
@@ -376,10 +376,10 @@ impl Renderer {
             physical_height,
             scale_factor: dst_scale_factor,
         };
-        render_pass.update_texture(device, queue, &*context.texture());
-        render_pass.update_user_textures(&device, &queue);
-        render_pass.update_buffers(device, queue, &paint_jobs, &screen_descriptor);
-        render_pass.execute(encoder, dst_texture, &paint_jobs, &screen_descriptor, None)
+        render_pass.update_texture(device, queue, &context.texture());
+        render_pass.update_user_textures(device, queue);
+        render_pass.update_buffers(device, queue, paint_jobs, &screen_descriptor);
+        render_pass.execute(encoder, dst_texture, paint_jobs, &screen_descriptor, None)
     }
 
     /// Encodes a render pass for drawing the given context's texture to the given frame.
@@ -535,8 +535,8 @@ fn winit_to_egui_modifiers(modifiers: winit::event::ModifiersState) -> egui::Mod
 
 /// We only want printable characters and ignore all special keys.
 fn is_printable(chr: char) -> bool {
-    let is_in_private_use_area = '\u{e000}' <= chr && chr <= '\u{f8ff}'
-        || '\u{f0000}' <= chr && chr <= '\u{ffffd}'
-        || '\u{100000}' <= chr && chr <= '\u{10fffd}';
+    let is_in_private_use_area = ('\u{e000}'..='\u{f8ff}').contains(&chr)
+        || ('\u{f0000}'..='\u{ffffd}').contains(&chr)
+        || ('\u{100000}'..='\u{10fffd}').contains(&chr);
     !is_in_private_use_area && !chr.is_ascii_control()
 }

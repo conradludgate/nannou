@@ -83,7 +83,7 @@ impl Reshaper {
                 let usage = wgpu::BufferUsages::UNIFORM;
                 let buffer = device.create_buffer_init(&BufferInitDescriptor {
                     label: None,
-                    contents: &uniforms_bytes,
+                    contents: uniforms_bytes,
                     usage,
                 });
                 Some(buffer)

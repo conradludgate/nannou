@@ -175,7 +175,7 @@ where
     I::Item: AsRef<laser::Point>,
 {
     let points = points.into_iter().map(|p| {
-        let mut p = p.as_ref().clone();
+        let mut p = *p.as_ref();
         p.position[0] *= scale;
         p.position[1] *= scale;
         p
@@ -224,8 +224,8 @@ fn laser(laser: &mut Laser, frame: &mut laser::Frame) {
             let yb = [0.0, 1.0];
             let x = [lit_p(xa), lit_p(xb)];
             let y = [lit_p(ya), lit_p(yb)];
-            add_points(&x, laser.draw_mode, laser.scale, frame);
-            add_points(&y, laser.draw_mode, laser.scale, frame);
+            add_points(x, laser.draw_mode, laser.scale, frame);
+            add_points(y, laser.draw_mode, laser.scale, frame);
         }
 
         TestPattern::ThreeVerticalLines => {
@@ -238,9 +238,9 @@ fn laser(laser: &mut Laser, frame: &mut laser::Frame) {
             let l = [lit_p(la), lit_p(lb)];
             let m = [lit_p(ma), lit_p(mb)];
             let r = [lit_p(ra), lit_p(rb)];
-            add_points(&l, laser.draw_mode, laser.scale, frame);
-            add_points(&m, laser.draw_mode, laser.scale, frame);
-            add_points(&r, laser.draw_mode, laser.scale, frame);
+            add_points(l, laser.draw_mode, laser.scale, frame);
+            add_points(m, laser.draw_mode, laser.scale, frame);
+            add_points(r, laser.draw_mode, laser.scale, frame);
         }
 
         TestPattern::Circle => {

@@ -60,7 +60,7 @@ fn model(app: &App) -> Model {
 fn view(app: &App, model: &Model, frame: Frame) {
     let draw = app.draw();
 
-    if model.mouse_drag == false {
+    if !model.mouse_drag {
         draw.background().color(WHITE);
     }
 

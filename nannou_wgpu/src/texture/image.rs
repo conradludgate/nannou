@@ -301,7 +301,7 @@ impl wgpu::RowPaddedBuffer {
         // This can theoretically be exploited by implementing `image::Primitive` for some type
         // that has padding. Instead, should make some `Subpixel` trait that we can control and is
         // only guaranteed to be implemented for safe types.
-        result.write(unsafe { wgpu::bytes::from_slice(&*image_buffer) });
+        result.write(unsafe { wgpu::bytes::from_slice(image_buffer) });
         result
     }
 
@@ -439,7 +439,7 @@ impl<'a> WithDeviceQueuePair for &'a wgpu::DeviceQueuePair {
     {
         let device = self.device();
         let queue = self.queue();
-        f(&*device, &*queue)
+        f(device, queue)
     }
 }
 
@@ -581,7 +581,7 @@ where
     // This can theoretically be exploited by implementing our `image::Pixel` trait for some type
     // that has padding. Perhaps it should be an unsafe trait? Should investigate how to achieve
     // this in a safer manner.
-    let data = unsafe { wgpu::bytes::from_slice(&*buffer) };
+    let data = unsafe { wgpu::bytes::from_slice(buffer) };
 
     queue.write_texture(image_copy_texture, data, image_data_layout, extent);
     texture
@@ -651,7 +651,7 @@ where
     let capacity = bytes_per_row as usize * height as usize * array_layers as usize;
     let mut data: Vec<u8> = Vec::with_capacity(capacity);
     for buffer in Some(first_buffer).into_iter().chain(buffers) {
-        let layer_data = unsafe { wgpu::bytes::from_slice(&*buffer) };
+        let layer_data = unsafe { wgpu::bytes::from_slice(buffer) };
         data.extend_from_slice(layer_data);
     }
 
@@ -778,7 +778,7 @@ where
     // Copy each buffer to the texture, one layer at a time.
     for (layer, buffer) in Some(first_buffer).into_iter().chain(buffers).enumerate() {
         // Upload the pixel data.
-        let buffer = wgpu::RowPaddedBuffer::from_image_buffer(device, &buffer);
+        let buffer = wgpu::RowPaddedBuffer::from_image_buffer(device, buffer);
         buffer.encode_copy_into_at(encoder, &texture, layer as u32);
     }
 
