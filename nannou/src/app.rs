@@ -31,7 +31,7 @@ use winit;
 use winit::event_loop::ControlFlow;
 
 /// The user function type for initialising their model.
-pub type ModelFn<Model> = Box<dyn FnOnce(&App) -> Model>;
+pub type ModelFn<'a, Model> = Box<dyn FnOnce(&App) -> Model + 'a>;
 
 /// The user function type for updating their model in accordance with some event.
 pub type EventFn<Model, Event> = fn(&App, &mut Model, Event);
@@ -57,8 +57,8 @@ enum View<Model = ()> {
 }
 
 /// A nannou `App` builder.
-pub struct Builder<M = (), E = Event> {
-    model: Box<dyn FnOnce(&App) -> Box<dyn Future<Output = M> + '_>>,
+pub struct Builder<'a, M: 'a = (), E = Event> {
+    model: Box<dyn FnOnce(&App) -> Box<dyn Future<Output = M> + 'a> + 'a>,
     config: Config,
     event: Option<EventFn<M, E>>,
     update: Option<UpdateFn<M>>,
@@ -73,7 +73,7 @@ pub struct Builder<M = (), E = Event> {
 
 /// A nannou `Sketch` builder.
 pub struct SketchBuilder<E = Event> {
-    builder: Builder<(), E>,
+    builder: Builder<'static, (), E>,
 }
 
 enum DefaultWindowSize {
@@ -233,9 +233,12 @@ pub enum LoopMode {
     },
 }
 
-impl<M> Builder<M, Event>
+pub trait Captures<T> {}
+impl<T, U> Captures<U> for T {}
+
+impl<'a, M> Builder<'a, M, Event>
 where
-    M: 'static,
+    M: 'a,
 {
     /// The default set of backends requested.
     pub const DEFAULT_BACKENDS: wgpu::Backends = wgpu::DEFAULT_BACKENDS;
@@ -251,15 +254,15 @@ where
     ///
     /// The Model that is returned by the function is the same model that will be passed to the
     /// given event and view functions.
-    pub fn new(model: ModelFn<M>) -> Self {
-        Self::new_async(move |app| Box::new(future::ready(model(app))))
+    pub fn new(model: ModelFn<'a, M>) -> Self {
+        Self::new_async(Box::new(move |app| Box::new(future::ready(model(app)))))
     }
 
     pub fn new_async(
-        model: impl FnOnce(&App) -> Box<dyn Future<Output = M> + '_> + 'static,
+        model: Box<dyn FnOnce(&App) -> Box<dyn Future<Output = M> + 'a> + 'a>,
     ) -> Self {
         Builder {
-            model: Box::new(model),
+            model,
             config: Config::default(),
             event: None,
             update: None,
@@ -281,7 +284,7 @@ where
     /// occur during the life of the program. These include things like `Update`s and
     /// `WindowEvent`s such as `KeyPressed`, `MouseMoved`, and so on.
     #[cfg_attr(rustfmt, rustfmt_skip)]
-    pub fn event<E>(self, event: EventFn<M, E>) -> Builder<M, E>
+    pub fn event<E>(self, event: EventFn<M, E>) -> Builder<'a, M, E>
     where
         E: LoopEvent,
     {
@@ -314,7 +317,7 @@ where
     }
 }
 
-impl<M, E> Builder<M, E>
+impl<M, E> Builder<'_, M, E>
 where
     M: 'static,
     E: LoopEvent,
@@ -541,7 +544,7 @@ where
     }
 }
 
-impl Builder<(), Event> {
+impl Builder<'_, (), Event> {
     /// Shorthand for building a simple app that has no model, handles no events and simply draws
     /// to a single window.
     ///
