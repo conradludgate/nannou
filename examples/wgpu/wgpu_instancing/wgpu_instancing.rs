@@ -372,7 +372,7 @@ fn create_uniforms(world_rotation: f32, [w, h]: [u32; 2]) -> Uniforms {
     Uniforms {
         world: world_rotation,
         view: (view * world_scale),
-        proj: proj,
+        proj,
     }
 }
 

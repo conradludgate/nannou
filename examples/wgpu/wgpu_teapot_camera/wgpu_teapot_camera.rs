@@ -312,7 +312,7 @@ fn create_uniforms([w, h]: [u32; 2], view: Mat4) -> Uniforms {
     Uniforms {
         world: rotation,
         view: (view * scale),
-        proj: proj,
+        proj,
     }
 }
 

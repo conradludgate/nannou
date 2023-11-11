@@ -108,7 +108,7 @@ fn view(app: &App, model: &Model, frame: Frame) {
         let mut counter = 0;
         // row count and row height
         let row_count = rng.gen_range(5..30);
-        let row_height = (app.window_rect().h() as i32 / row_count);
+        let row_height = app.window_rect().h() as i32 / row_count;
 
         // seperate each line in parts
         for i in (0..=row_count).rev() {
