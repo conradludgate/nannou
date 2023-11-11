@@ -28,7 +28,7 @@ Update the view function of your nannou-app to look like this:
 # use nannou::prelude::*;
 # struct Model{}
 # fn main() {
-#    nannou::app(model)
+#    nannou::app(Box::new(model))
 #        .event(event)
 #        .simple_window(view)
 #        .run();

@@ -4,7 +4,7 @@
 use nannou::prelude::*;
 
 fn main() {
-    nannou::app(model).update(update).exit(exit).run();
+    nannou::app(Box::new(model)).update(update).exit(exit).run();
 }
 
 struct Model {

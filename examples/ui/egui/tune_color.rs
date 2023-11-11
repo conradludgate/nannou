@@ -5,7 +5,7 @@ const WIDTH: f32 = 640.0;
 const HEIGHT: f32 = 360.0;
 
 fn main() {
-    nannou::app(model).update(update).run();
+    nannou::app(Box::new(model)).update(update).run();
 }
 
 struct Model {

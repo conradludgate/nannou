@@ -4,7 +4,7 @@ mod ball;
 use crate::ball::Ball;
 
 fn main() {
-    nannou::app(model).update(update).simple_window(view).run();
+    nannou::app(Box::new(model)).update(update).simple_window(view).run();
 }
 
 struct Model {

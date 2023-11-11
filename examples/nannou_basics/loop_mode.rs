@@ -11,7 +11,7 @@ use nannou::prelude::*;
 
 fn main() {
     // Start in `Wait` mode. In other words, don't keep looping, just wait for events.
-    nannou::app(model)
+    nannou::app(Box::new(model))
         .loop_mode(LoopMode::Wait)
         .update(update)
         .run();

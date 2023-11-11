@@ -42,7 +42,7 @@ use nannou::rand::rngs::StdRng;
 use nannou::rand::{Rng, SeedableRng};
 
 fn main() {
-    nannou::app(model).run();
+    nannou::app(Box::new(model)).run();
 }
 
 struct Model {

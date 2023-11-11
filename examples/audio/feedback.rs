@@ -7,7 +7,7 @@ use nannou_audio::Buffer;
 use ringbuf::{Consumer, Producer, RingBuffer};
 
 fn main() {
-    nannou::app(model).run();
+    nannou::app(Box::new(model)).run();
 }
 
 struct Model {

@@ -4,7 +4,7 @@ use nannou_audio::Buffer;
 use std::f64::consts::PI;
 
 fn main() {
-    nannou::app(model).run();
+    nannou::app(Box::new(model)).run();
 }
 
 struct Model {

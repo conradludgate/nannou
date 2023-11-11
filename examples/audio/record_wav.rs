@@ -11,7 +11,7 @@ extern crate hound;
 type WavWriter = hound::WavWriter<BufWriter<File>>;
 
 fn main() {
-    nannou::app(model).run();
+    nannou::app(Box::new(model)).run();
 }
 
 struct Model {

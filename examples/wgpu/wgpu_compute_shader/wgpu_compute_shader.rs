@@ -33,7 +33,7 @@ pub struct Uniforms {
 const OSCILLATOR_COUNT: u32 = 128;
 
 fn main() {
-    nannou::app(model).update(update).run();
+    nannou::app(Box::new(model)).update(update).run();
 }
 
 fn model(app: &App) -> Model {

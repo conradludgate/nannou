@@ -32,7 +32,7 @@ use nannou::image;
 use nannou::image::GenericImageView;
 
 fn main() {
-    nannou::app(model).run();
+    nannou::app(Box::new(model)).run();
 }
 
 struct Model {

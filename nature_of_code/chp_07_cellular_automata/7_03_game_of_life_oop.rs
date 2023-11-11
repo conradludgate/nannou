@@ -11,7 +11,7 @@ use nannou::prelude::*;
 use std::ops::Range;
 
 fn main() {
-    nannou::app(model).update(update).run();
+    nannou::app(Box::new(model)).update(update).run();
 }
 
 #[derive(Clone)]

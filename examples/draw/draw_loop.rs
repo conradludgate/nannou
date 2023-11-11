@@ -10,7 +10,7 @@ use nannou::noise::*;
 use nannou::prelude::*;
 
 fn main() {
-    nannou::app(model).run();
+    nannou::app(Box::new(model)).run();
 }
 
 struct Model {

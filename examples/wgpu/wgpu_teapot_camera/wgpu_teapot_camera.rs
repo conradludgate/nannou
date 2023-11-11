@@ -77,7 +77,7 @@ fn pitch_yaw_to_direction(pitch: f32, yaw: f32) -> Vec3 {
 }
 
 fn main() {
-    nannou::app(model).event(event).update(update).run();
+    nannou::app(Box::new(model)).event(event).update(update).run();
 }
 
 fn model(app: &App) -> Model {

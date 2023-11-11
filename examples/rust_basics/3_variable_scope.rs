@@ -5,7 +5,7 @@ use nannou::prelude::*;
 const GLOBAL: i32 = 10;
 
 fn main() {
-    nannou::app(model).run();
+    nannou::app(Box::new(model)).run();
 }
 
 struct Model {

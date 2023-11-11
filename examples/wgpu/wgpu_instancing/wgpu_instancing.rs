@@ -145,7 +145,7 @@ pub struct Instance {
 const DEPTH_FORMAT: wgpu::TextureFormat = wgpu::TextureFormat::Depth32Float;
 
 fn main() {
-    nannou::app(model).run();
+    nannou::app(Box::new(model)).run();
 }
 
 fn model(app: &App) -> Model {
@@ -444,7 +444,7 @@ fn create_render_pipeline(
             wgpu::VertexAttribute {
                 shader_location: 3,
                 format: wgpu::VertexFormat::Float32x4,
-                offset: std::mem::size_of::<[f32; 4]>() as u64,
+                offset: std::mem::size_of::<[f32; 4]>() as u64 * 1,
             },
             wgpu::VertexAttribute {
                 shader_location: 4,

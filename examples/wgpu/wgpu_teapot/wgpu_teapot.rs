@@ -42,7 +42,7 @@ pub struct Uniforms {
 const DEPTH_FORMAT: wgpu::TextureFormat = wgpu::TextureFormat::Depth32Float;
 
 fn main() {
-    nannou::app(model).run();
+    nannou::app(Box::new(model)).run();
 }
 
 fn model(app: &App) -> Model {

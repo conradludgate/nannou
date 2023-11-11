@@ -2,7 +2,7 @@ use nannou::prelude::*;
 use nannou_osc as osc;
 
 fn main() {
-    nannou::app(model).update(update).run();
+    nannou::app(Box::new(model)).update(update).run();
 }
 
 struct Model {

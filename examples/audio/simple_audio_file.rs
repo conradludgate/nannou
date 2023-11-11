@@ -3,7 +3,7 @@ use nannou_audio as audio;
 use nannou_audio::Buffer;
 
 fn main() {
-    nannou::app(model).run();
+    nannou::app(Box::new(model)).run();
 }
 
 struct Model {

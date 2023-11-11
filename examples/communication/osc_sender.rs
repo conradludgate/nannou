@@ -3,7 +3,7 @@ use nannou_osc as osc;
 use nannou_osc::Type;
 
 fn main() {
-    nannou::app(model).run();
+    nannou::app(Box::new(model)).run();
 }
 
 struct Model {

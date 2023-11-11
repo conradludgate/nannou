@@ -3,7 +3,7 @@ use nannou::prelude::*;
 // Every rust program has to have a main function which gets called when the program is run.
 // In the main function, we build the nannou app and run it.
 fn main() {
-    nannou::app(model).update(update).run();
+    nannou::app(Box::new(model)).update(update).run();
 }
 
 // Model represents the state of our application. We don't have any state in this demonstration, so

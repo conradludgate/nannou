@@ -30,7 +30,7 @@ use nannou::noise::{NoiseFn, Perlin, Seedable};
 use nannou::prelude::*;
 
 fn main() {
-    nannou::app(model).update(update).run();
+    nannou::app(Box::new(model)).update(update).run();
 }
 
 struct Agent {

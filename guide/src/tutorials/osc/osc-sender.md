@@ -154,7 +154,7 @@ use nannou::prelude::*;
 use nannou_osc as osc;
 
 fn main() {
-    nannou::app(model).simple_window(view).run();
+    nannou::app(Box::new(model)).simple_window(view).run();
 }
 
 struct Model {

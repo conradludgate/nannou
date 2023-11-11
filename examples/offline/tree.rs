@@ -11,7 +11,7 @@ const LENGTH_FRAME: u64 = 700;
 //const START_FRAME: u64 = 0;
 
 fn main() {
-    nannou::app(model).update(update).run();
+    nannou::app(Box::new(model)).update(update).run();
 }
 
 struct Model {

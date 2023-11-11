@@ -31,7 +31,7 @@ use nannou::lyon::math::Point;
 use nannou::lyon::path::PathEvent;
 
 fn main() {
-    nannou::app(model).run();
+    nannou::app(Box::new(model)).run();
 }
 
 struct Model {

@@ -4,7 +4,7 @@ use nannou::prelude::*;
 use nannou_laser as laser;
 
 fn main() {
-    nannou::app(model).run();
+    nannou::app(Box::new(model)).run();
 }
 
 struct Model {

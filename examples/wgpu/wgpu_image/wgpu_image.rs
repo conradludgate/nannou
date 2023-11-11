@@ -32,7 +32,7 @@ const VERTICES: [Vertex; 4] = [
 ];
 
 fn main() {
-    nannou::app(model).run();
+    nannou::app(Box::new(model)).run();
 }
 
 fn model(app: &App) -> Model {

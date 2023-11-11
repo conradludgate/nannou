@@ -41,7 +41,7 @@ enum Direction {
 }
 
 fn main() {
-    nannou::app(model).update(update).run();
+    nannou::app(Box::new(model)).update(update).run();
 }
 
 struct Model {

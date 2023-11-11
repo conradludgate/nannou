@@ -1,7 +1,7 @@
 use nannou::prelude::*;
 
 fn main() {
-    nannou::app(model)
+    nannou::app(Box::new(model))
         .event(event)
         .update(update)
         .view(view)

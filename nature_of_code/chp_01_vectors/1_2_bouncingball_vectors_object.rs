@@ -6,7 +6,7 @@
 use nannou::prelude::*;
 
 fn main() {
-    nannou::app(model)
+    nannou::app(Box::new(model))
         .update(update)
         .simple_window(view)
         .size(300, 300)

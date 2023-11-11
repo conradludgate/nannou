@@ -64,7 +64,7 @@ looks like:
 use nannou::prelude::*;
 
 fn main() {
-    nannou::app(model).update(update).run();
+    nannou::app(Box::new(model)).update(update).run();
 }
 
 struct Model {
@@ -99,7 +99,7 @@ custom ***state*** (i.e. the `Model`), whereas a sketch does not.
 > is simply short-hand for
 >
 > ```rust,ignore
-> nannou::app(model).simple_window(view).run()
+> nannou::app(Box::new(model)).simple_window(view).run()
 > ```
 > except without the need for `model` and with a slightly simpler `view` function.
 
@@ -128,7 +128,7 @@ flexibility, you can turn it into an app by following these steps:
    # #![allow(dead_code)]
    # use nannou::prelude::*;
    # fn main() {
-   nannou::app(model).simple_window(view).run()
+   nannou::app(Box::new(model)).simple_window(view).run()
    # }
    # struct Model {}
    # fn model(_: &App) -> Model { Model {} }
@@ -185,7 +185,7 @@ And that's it! You are now ready to take your sketch to the next level.
 | Easier to start drawing quickly? | Yes | No |
 | Allows for a `Model`? | No | Yes |
 | Allows for  audio/LASER/MIDI/etc? | No | Yes |
-| The `main` function looks like: | `nannou::sketch(view)` | `nannou::app(model)` |
+| The `main` function looks like: | `nannou::sketch(view)` | `nannou::app(Box::new(model))` |
 | Templates | [template_sketch.rs](https://github.com/nannou-org/nannou/blob/master/examples/templates/template_sketch.rs) | [template_app.rs](https://github.com/nannou-org/nannou/blob/master/examples/templates/template_app.rs) |
 | Can make awesome stuff? | Yes | Yes |
 

@@ -43,7 +43,7 @@ use nannou::prelude::*;
 struct Model {}
 
 fn main() {
-  nannou::app(model).run();
+  nannou::app(Box::new(model)).run();
 }
 
 fn model(app: &App) -> Model {
@@ -69,7 +69,7 @@ struct Model {
   texture: wgpu::Texture,
 }
 # fn main() {
-#   nannou::app(model).run();
+#   nannou::app(Box::new(model)).run();
 # }
 # fn model(app: &App) -> Model {
 #   // Create a new window!
@@ -90,7 +90,7 @@ Next, we'll need to create a GPU texture to initialize the struct with. We can a
 #   texture: wgpu::Texture,
 # }
 # fn main() {
-#   nannou::app(model).run();
+#   nannou::app(Box::new(model)).run();
 # }
 fn model(app: &App) -> Model {
   // Create a new window!
@@ -118,7 +118,7 @@ Finally, in our `view` function, we can draw the texture stored in our model wit
 #   texture: wgpu::Texture,
 # }
 # fn main() {
-#   nannou::app(model).run();
+#   nannou::app(Box::new(model)).run();
 # }
 # fn model(app: &App) -> Model {
 #   // Create a new window!
@@ -152,7 +152,7 @@ A texture can be drawn at any location and any size desired within the frame. Le
 #   texture: wgpu::Texture,
 # }
 # fn main() {
-#   nannou::app(model).run();
+#   nannou::app(Box::new(model)).run();
 # }
 # fn model(app: &App) -> Model {
 #   // Create a new window!

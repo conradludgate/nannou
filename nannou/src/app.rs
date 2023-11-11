@@ -31,7 +31,7 @@ use winit;
 use winit::event_loop::ControlFlow;
 
 /// The user function type for initialising their model.
-pub type ModelFn<Model> = fn(&App) -> Model;
+pub type ModelFn<Model> = Box<dyn FnOnce(&App) -> Model>;
 
 /// The user function type for updating their model in accordance with some event.
 pub type EventFn<Model, Event> = fn(&App, &mut Model, Event);
@@ -548,7 +548,7 @@ impl Builder<(), Event> {
     /// This is useful for late night hack sessions where you just don't care about all that other
     /// stuff, you just want to play around with some ideas or make something pretty.
     pub fn sketch(view: SketchViewFn) -> SketchBuilder<Event> {
-        let mut builder = Builder::new(default_model);
+        let mut builder = Builder::new(Box::new(default_model));
         builder.default_view = Some(View::Sketch(view));
         builder.create_default_window = true;
         SketchBuilder { builder }

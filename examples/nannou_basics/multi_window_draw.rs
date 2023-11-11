@@ -1,7 +1,7 @@
 use nannou::prelude::*;
 
 fn main() {
-    nannou::app(model).update(update).view(view).run();
+    nannou::app(Box::new(model)).update(update).view(view).run();
 }
 
 struct Model {

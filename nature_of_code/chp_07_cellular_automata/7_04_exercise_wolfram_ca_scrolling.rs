@@ -14,7 +14,7 @@ use std::ops::Range;
 const RULE: i32 = 5;
 
 fn main() {
-    nannou::app(model).update(update).run();
+    nannou::app(Box::new(model)).update(update).run();
 }
 
 // A Type to manage the CA

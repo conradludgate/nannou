@@ -22,7 +22,7 @@ use nannou::prelude::*;
 struct Model {}
 
 fn main() {
-    nannou::app(model)
+    nannou::app(Box::new(model))
         .event(event)
         .simple_window(view)
         .run();
@@ -87,7 +87,7 @@ model can stay empty.
 # use nannou::prelude::*;
 # struct Model {}
 fn main() {
-    nannou::app(model)
+    nannou::app(Box::new(model))
         .event(event)
         .simple_window(view)
         .run();
@@ -109,7 +109,7 @@ quite small. In short, we build a description of our app and then run it!
 # use nannou::prelude::*;
 # struct Model {}
 # fn main() {
-    nannou::app(model)       // Start building the app and specify our `model`
+    nannou::app(Box::new(model))       // Start building the app and specify our `model`
         .event(event)        // Specify that we want to handle app events with `event`
         .simple_window(view) // Request a simple window to which we'll draw with `view`
         .run();              // Run it!
@@ -224,7 +224,7 @@ our app building code to this:
 # use nannou::prelude::*;
 # struct Model {}
 fn main() {
-    nannou::app(model)
+    nannou::app(Box::new(model))
         .update(update) // rather than `.event(event)`, now we only subscribe to updates
         .simple_window(view)
         .run();

@@ -36,7 +36,7 @@ use nannou::color::FromColor;
 use nannou::color::Mix;
 
 fn main() {
-    nannou::app(model).update(update).run();
+    nannou::app(Box::new(model)).update(update).run();
 }
 
 struct Model {

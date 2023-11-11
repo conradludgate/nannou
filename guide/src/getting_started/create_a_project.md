@@ -46,7 +46,7 @@ create a new project with just a few small steps:
    use nannou::prelude::*;
 
    fn main() {
-       nannou::app(model)
+       nannou::app(Box::new(model))
            .update(update)
            .simple_window(view)
            .run();
