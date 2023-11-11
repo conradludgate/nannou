@@ -80,10 +80,7 @@ fn pass_in(model: &mut InputModel, buffer: &Buffer) {
 fn pass_out(model: &mut OutputModel, buffer: &mut Buffer) {
     for frame in buffer.frames_mut() {
         for sample in frame {
-            let recorded_sample = match model.consumer.pop() {
-                Some(f) => f,
-                None => 0.0,
-            };
+            let recorded_sample = model.consumer.pop().unwrap_or(0.0);
             *sample = recorded_sample;
         }
     }

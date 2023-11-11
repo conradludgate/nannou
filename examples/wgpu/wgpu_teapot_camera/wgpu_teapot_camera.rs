@@ -251,10 +251,8 @@ fn key_pressed(app: &App, model: &mut Model, key: Key) {
             if window.set_cursor_grab(true).is_ok() {
                 model.camera_is_active = true;
             }
-        } else {
-            if window.set_cursor_grab(false).is_ok() {
-                model.camera_is_active = false;
-            }
+        } else if window.set_cursor_grab(false).is_ok() {
+            model.camera_is_active = false;
         }
         window.set_cursor_visible(!model.camera_is_active);
     }
@@ -313,8 +311,8 @@ fn create_uniforms([w, h]: [u32; 2], view: Mat4) -> Uniforms {
     let scale = Mat4::from_scale(Vec3::splat(0.01));
     Uniforms {
         world: rotation,
-        view: (view * scale).into(),
-        proj: proj.into(),
+        view: (view * scale),
+        proj: proj,
     }
 }
 
@@ -370,7 +368,7 @@ fn create_render_pipeline(
     sample_count: u32,
 ) -> wgpu::RenderPipeline {
     wgpu::RenderPipelineBuilder::from_layout(layout, vs_mod)
-        .fragment_shader(&fs_mod)
+        .fragment_shader(fs_mod)
         .color_format(dst_format)
         .color_blend(wgpu::BlendComponent::REPLACE)
         .alpha_blend(wgpu::BlendComponent::REPLACE)

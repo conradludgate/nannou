@@ -53,8 +53,7 @@ fn make_geodesic_isocahedron(subdivisions: usize) -> Vec<Vec3> {
         [4, 8, 10],
     ];
 
-    let missing_edges = vec![
-        [1, 2],
+    let missing_edges = [[1, 2],
         [4, 5],
         [6, 7],
         [10, 11],
@@ -63,8 +62,7 @@ fn make_geodesic_isocahedron(subdivisions: usize) -> Vec<Vec3> {
         [5, 11],
         [7, 8],
         [8, 1],
-        [7, 10],
-    ];
+        [7, 10]];
 
     points.reserve(
         triangles.len() * subdivisions * (subdivisions + 1) / 2
@@ -302,7 +300,7 @@ fn view(app: &App, model: &Model, frame: Frame) {
         .iter()
         .map(|direction| {
             make_instance(
-                direction.clone(),
+                *direction,
                 outer_sphere_radius,
                 outer_sphere_instance_rotation,
                 outer_sphere_scale,
@@ -311,7 +309,7 @@ fn view(app: &App, model: &Model, frame: Frame) {
         })
         .chain(model.sphere.iter().enumerate().map(|(i, direction)| {
             make_instance(
-                direction.clone(),
+                *direction,
                 inner_sphere_radius + 2f32 * (i as f32 + app.time).sin().pow(4f32),
                 inner_sphere_instance_rotation,
                 inner_sphere_scale,
@@ -373,8 +371,8 @@ fn create_uniforms(world_rotation: f32, [w, h]: [u32; 2]) -> Uniforms {
     let world_scale = Mat4::from_scale(Vec3::splat(0.015));
     Uniforms {
         world: world_rotation,
-        view: (view * world_scale).into(),
-        proj: proj.into(),
+        view: (view * world_scale),
+        proj: proj,
     }
 }
 
@@ -430,7 +428,7 @@ fn create_render_pipeline(
     sample_count: u32,
 ) -> wgpu::RenderPipeline {
     wgpu::RenderPipelineBuilder::from_layout(layout, vs_mod)
-        .fragment_shader(&fs_mod)
+        .fragment_shader(fs_mod)
         .color_format(dst_format)
         .color_blend(wgpu::BlendComponent::REPLACE)
         .alpha_blend(wgpu::BlendComponent::REPLACE)
@@ -446,7 +444,7 @@ fn create_render_pipeline(
             wgpu::VertexAttribute {
                 shader_location: 3,
                 format: wgpu::VertexFormat::Float32x4,
-                offset: std::mem::size_of::<[f32; 4]>() as u64 * 1,
+                offset: std::mem::size_of::<[f32; 4]>() as u64,
             },
             wgpu::VertexAttribute {
                 shader_location: 4,

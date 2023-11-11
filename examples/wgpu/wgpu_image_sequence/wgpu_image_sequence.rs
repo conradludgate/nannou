@@ -86,7 +86,7 @@ fn model(app: &App) -> Model {
         let queue = window.queue();
         // Describe how we will use the texture so that the GPU may handle it efficiently.
         let usage = wgpu::TextureUsages::TEXTURE_BINDING;
-        let iter = images.iter().map(|&(_, ref img)| img);
+        let iter = images.iter().map(|(_, img)| img);
         wgpu::Texture::load_array_from_image_buffers(device, queue, usage, iter)
             .expect("tied to load texture array with an empty image buffer sequence")
     };

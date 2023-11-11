@@ -140,7 +140,7 @@ fn update(app: &App, model: &mut Model, _update: Update) {
         let mut cpass = encoder.begin_compute_pass(&pass_desc);
         cpass.set_pipeline(&compute.pipeline);
         cpass.set_bind_group(0, &compute.bind_group, &[]);
-        cpass.dispatch(OSCILLATOR_COUNT as u32, 1, 1);
+        cpass.dispatch(OSCILLATOR_COUNT, 1, 1);
     }
     encoder.copy_buffer_to_buffer(
         &compute.oscillator_buffer,
@@ -265,7 +265,7 @@ fn create_compute_pipeline(
     let desc = wgpu::ComputePipelineDescriptor {
         label: Some("nannou"),
         layout: Some(layout),
-        module: &cs_mod,
+        module: cs_mod,
         entry_point: "main",
     };
     device.create_compute_pipeline(&desc)

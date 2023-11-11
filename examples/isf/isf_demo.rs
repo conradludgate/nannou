@@ -84,11 +84,11 @@ fn view(app: &App, model: &Model, frame: Frame) {
     let win = app.window_rect();
     let draw = app.draw();
     let (vs_string, vs_color) = match model.isf_pipeline.vs_err() {
-        None => (format!("Vertex Shader: Compiled Successfully!"), GREEN),
+        None => ("Vertex Shader: Compiled Successfully!".to_string(), GREEN),
         Some(e) => (format!("Vertex Shader:\n{}", e), RED),
     };
     let (fs_string, fs_color) = match model.isf_pipeline.fs_err() {
-        None => (format!("Fragment Shader: Compiled Successfully!"), GREEN),
+        None => ("Fragment Shader: Compiled Successfully!".to_string(), GREEN),
         Some(e) => (format!("Fragment Shader:\n{}", e), RED),
     };
     let win_p = win.pad(30.0);
